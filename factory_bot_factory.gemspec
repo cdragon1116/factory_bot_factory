@@ -7,10 +7,12 @@ Gem::Specification.new do |spec|
   spec.version       = FactoryBotFactory::VERSION
   spec.authors       = ["cdragon"]
   spec.email         = "cdragon1116@gmail.com"
+  spec.homepage      = "https://github.com/cdragon1116/factory_bot_factory"
 
   spec.summary       = "A Gem that geneartes FactoryBot Factory"
   spec.description   = "A Gem that geneartes FactoryBot Factory"
   spec.license       = "MIT"
+
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
