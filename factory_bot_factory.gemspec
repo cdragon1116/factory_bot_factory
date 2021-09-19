@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.email         = "cdragon1116@gmail.com"
   spec.homepage      = "https://github.com/cdragon1116/factory_bot_factory"
 
-  spec.summary       = "A Gem that geneartes FactoryBot Factory"
-  spec.description   = "A Gem that geneartes FactoryBot Factory"
+  spec.summary       = "A Gem that generate FactoryBot's Factory file from exsiting Hash, OpenStruct or Models."
+  spec.description   = "A Gem that generate FactoryBot's Factory file from exsiting Hash, OpenStruct or Models."
   spec.license       = "MIT"
 
 

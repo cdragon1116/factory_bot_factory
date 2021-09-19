@@ -18,6 +18,8 @@ module FactoryBotFactory
       nested_level: nested_level,
       file_path: file_path
     ).generate(data)
+  rescue => e
+    puts "Please check your input data and make sure you pass supported type of factory."
   end
 
   private

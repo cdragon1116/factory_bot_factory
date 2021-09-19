@@ -2,6 +2,8 @@
 
 A Gem that helps you generate FactoryBot's Factory file from exsiting Hash, OpenStruct or ActiveModels.
 
+The main purpose is to speed up the process of building big factory.
+
 ## Installation
 
 ```ruby
