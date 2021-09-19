@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe FactoryBotFactory::ModelFactory do
+RSpec.describe FactoryBotFactory::ActiveRecordFactory do
   let(:post) { Post.create(title: 'my first post') }
   include_context :factory
 

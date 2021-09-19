@@ -6,6 +6,11 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
+    activemodel (6.1.4.1)
+      activesupport (= 6.1.4.1)
+    activerecord (6.1.4.1)
+      activemodel (= 6.1.4.1)
+      activesupport (= 6.1.4.1)
     activesupport (6.1.4.1)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 1.6, < 2)
@@ -40,6 +45,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.10.0)
     rspec-support (3.10.2)
+    sqlite3 (1.4.2)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
     zeitwerk (2.4.2)
@@ -48,6 +54,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  activerecord (> 5.0.0.1)
   bundler (>= 2.2.10)
   factory_bot
   factory_bot_factory!
@@ -55,6 +62,7 @@ DEPENDENCIES
   pry (~> 0.13.1)
   rake (>= 11.2.2)
   rspec (~> 3.0)
+  sqlite3
 
 BUNDLED WITH
    2.2.27

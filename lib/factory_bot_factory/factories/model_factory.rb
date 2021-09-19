@@ -1,6 +1,6 @@
 module FactoryBotFactory
   class ModelFactory < BaseFactory
-    def build_factory(name, value, level)
+    def build_factory(name, value, level, _options = {})
       output = LineWriter.wrap_factory(name, value.class.name) do
         inner_output = []
         value.attributes.each do |key, value|

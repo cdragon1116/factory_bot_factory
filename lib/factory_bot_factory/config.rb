@@ -3,15 +3,23 @@ module FactoryBotFactory
     DEFAULT_CONVERTERS = {
       hash_converter:        Converters::HashConverter,
       string_converter:      Converters::StringConverter,
-      numertic_converter:    Converters::NumericConverter,
+      numeric_converter:     Converters::NumericConverter,
+      big_decimal_converter: Converters::NumericConverter,
       open_struct_converter: Converters::HashConverter,
-      nil_converter:         Converters::NilConverter
+      nil_converter:         Converters::NilConverter,
+      date_time_converter:   Converters::DateTimeConverter,
+      date_converter:        Converters::StringConverter,
+      array_converter:       Converters::HashConverter
     }
 
-    attr_accessor :hash_converter, :string_converter, :numertic_converter, :open_struct_converter, :nil_converter, :factory_path
+    DEFAULT_OPTIONS = {
+      factory_path: nil
+    }.merge(DEFAULT_CONVERTERS)
+
+    attr_accessor *DEFAULT_OPTIONS.keys
 
     def initialize(options = {})
-      options = DEFAULT_CONVERTERS.merge(options)
+      options = DEFAULT_OPTIONS.merge(options)
       options[:factory_path] = options[:factory_path][0..-2] if options[:factory_path]&.end_with?("/")
       options.each { |k, v| instance_variable_set(:"@#{k}", v) }
     end
