@@ -16,19 +16,6 @@ RSpec.describe FactoryBotFactory::Base do
 
   describe "#build" do
     let(:data) { { id: 1 } }
-    # (TODO): to be deprecated
-    it "should build factory" do
-      expect(FactoryBotFactory::HashFactory)
-        .to receive(:new)
-        .with(factory_name: :my_class, nested_level: 1, file_path: 'spec/factories/test.rb')
-        .and_call_original
-
-      expect_any_instance_of(FactoryBotFactory::HashFactory)
-        .to receive(:generate)
-        .with(data)
-
-      described_class.build(:my_class, "Hash", data, nested_level: 1, file_path: 'spec/factories/test.rb')
-    end
 
     context "when invalid args" do
       it "should raise error" do
@@ -44,7 +31,7 @@ RSpec.describe FactoryBotFactory::Base do
 
         expect(FactoryBotFactory::ModelFactory)
           .to receive(:new)
-          .with(factory_name: 'user')
+          .with(factory_name: 'user', klass: User)
           .and_call_original
 
         expect_any_instance_of(FactoryBotFactory::ModelFactory)

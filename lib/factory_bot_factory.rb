@@ -16,9 +16,10 @@ module FactoryBotFactory
   class FileExistsError < ::FactoryBotFactory::Error; end
 
   class << self
-    def build(*args)
+    def build(data, options = {})
       configure
-      Base.build(*args)
+
+      Base.build(data, options)
     end
 
     def configure
