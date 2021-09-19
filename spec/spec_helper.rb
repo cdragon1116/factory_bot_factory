@@ -4,11 +4,14 @@ require "json"
 require "factory_bot"
 require "factory_bot_factory"
 require "shared_context/factory"
+require "helpers/configration"
 
 $LOAD_PATH.unshift File.expand_path("../lib", __dir__)
 
 RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
+  config.include Helpers::Configuration
+
 
   # Enable flags like --only-failures and --next-failure
   config.example_status_persistence_file_path = ".rspec_status"

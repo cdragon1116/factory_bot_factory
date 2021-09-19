@@ -25,15 +25,21 @@ module FactoryBotFactory
       end
 
       output = output.join(LineWriter::NEW_LINE)
-      write_to_file(output) if @file_path
+      write_to_file(output)
       output
     end
 
     private
 
     def write_to_file(output)
-      raise FileExistsError, "File already exists in #{@file_path}" if File.file?(@file_path)
-      File.open(@file_path, 'w') {|f| f.write(output) }
+      path = @file_path
+      factory_path = FactoryBotFactory.config.factory_path
+      return unless path || factory_path
+      path ||= factory_path + "/#{@factory_name}.rb"
+
+      raise FileExistsError, "File already exists in #{path}" if File.file?(path)
+
+      File.open(path, 'w') {|f| f.write(output) }
     end
 
     def build_factory(name, value, level)
