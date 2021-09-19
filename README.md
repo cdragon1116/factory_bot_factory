@@ -6,6 +6,8 @@ A Gem that helps you generate FactoryBot's Factory file from exsiting Hash, Open
 
 The main purpose is to speed up the process of building big factory.
 
+![factory_bot_factory-speed-demo-s](https://user-images.githubusercontent.com/39395058/133915894-c43907b4-8e3f-4a0d-b64e-bda2a5d55748.gif)
+
 ## Installation
 
 ```ruby
@@ -103,12 +105,12 @@ FactoryBotFactory.build("order_open_struct", OpenStruct, data)
 
 - Your ActiveModel or ActiveRecord Model
 ```ruby
-FactoryBotFactory.build("user", User, user_instance)
+FactoryBotFactory.build("user", User, User.first)
 ```
 
 ## Configure your own converter
 
-- Configure
+- Configuration
 
 ```ruby
 FactoryBotFactory.configure do |config|
@@ -122,7 +124,10 @@ FactoryBotFactory.configure do |config|
     end
   end
 end
+```
 
+- Output
+```ruby
 FactoryBotFactory.build("order_hash", Hash, { name: 'My Name', id: "de9515ee-006e-4a28-8af3-e88a5c771b93" })
 
 # output
@@ -135,8 +140,7 @@ FactoryBot.define do
 end
 ```
 
-See move converters 'lib/factory_bot_factory/config.rb'
-
+See more converters [Here](https://github.com/cdragon1116/factory_bot_factory/blob/master/lib/factory_bot_factory/config.rb#L3-L9)
 
 ## Contributing
 
