@@ -1,5 +1,7 @@
 # Factory Bot Factory
 
+[![Gem Version](https://badge.fury.io/rb/factory_bot_factory.svg)](https://rubygems.org/gems/factory_bot_factory) ![Gem Version](https://app.travis-ci.com/cdragon1116/factory_bot_factory.svg?branch=main)
+
 A Gem that helps you generate FactoryBot's Factory file from exsiting Hash, OpenStruct or ActiveModels.
 
 The main purpose is to speed up the process of building big factory.
@@ -95,12 +97,12 @@ FactoryBotFactory.build("order_hash", Hash, data)
 ```
 
 - OpenStruct
-```
+```ruby
 FactoryBotFactory.build("order_open_struct", OpenStruct, data)
 ```
 
 - Your ActiveModel or ActiveRecord Model
-```
+```ruby
 FactoryBotFactory.build("user", User, user_instance)
 ```
 

@@ -2,12 +2,13 @@ require "json"
 require "factory_bot_factory/version"
 
 # Load all Factories and Converters
-Dir.glob("#{File.dirname(__FILE__)}/factory_bot_factory/factories/*").each { |file| require(file) }
 Dir.glob("#{File.dirname(__FILE__)}/factory_bot_factory/converters/*").each { |file| require(file) }
-
-require 'factory_bot_factory/line_writer.rb'
-require 'factory_bot_factory/base.rb'
 require "factory_bot_factory/config"
+
+require 'factory_bot_factory/base.rb'
+require 'factory_bot_factory/line_writer.rb'
+Dir.glob("#{File.dirname(__FILE__)}/factory_bot_factory/factories/*").each { |file| require(file) }
+
 
 module FactoryBotFactory
   class Error < StandardError; end

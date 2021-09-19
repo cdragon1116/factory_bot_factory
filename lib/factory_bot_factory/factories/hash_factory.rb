@@ -1,3 +1,5 @@
+require 'factory_bot_factory/factories/base_factory.rb'
+
 module FactoryBotFactory
   class HashFactory < BaseFactory
     def build_factory(name, value, level)
