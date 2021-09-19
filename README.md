@@ -6,8 +6,6 @@ A Gem that helps you generate FactoryBot's Factory file from exsiting Hash, Open
 
 The main purpose is to speed up the process of building big factory.
 
-![factory_bot_factory-speed-demo-s](https://user-images.githubusercontent.com/39395058/133915894-c43907b4-8e3f-4a0d-b64e-bda2a5d55748.gif)
-
 ## Installation
 
 ```ruby
@@ -23,7 +21,16 @@ Or install it yourself as:
     $ gem install factory_bot_factory
 
 
-## Quick Demo
+## Qucik Usage
+
+```ruby
+FactoryBotFactory.build({ id: 1 })
+FactoryBotFactory.build(OpenStruct.new(id: 1))
+FactoryBotFactory.build(User.last)
+```
+
+
+## More Options
 
 - Build a Hash Factory
 
@@ -31,11 +38,11 @@ Or install it yourself as:
 require 'factory_bot_factory'
 
 data = { id: 1, tags: ["tag1", "tag2"], address: { country: "US" }  }
-puts FactoryBotFactory.build("order_hash", Hash, data)
+puts FactoryBotFactory.build(data)
 
 # output
 FactoryBot.define do
-  factory :order_hash, class: Hash do
+  factory :hash, class: Hash do
     id { 1 }
     tags do
       [
@@ -57,11 +64,11 @@ end
 
 ```ruby
 data = { id: 1, tags: ["tag1", "tag2"], address: { country: "US" }  }
-puts FactoryBotFactory.build("order_hash", Hash, data, nested_level: 2)
+puts FactoryBotFactory.build(data, nested_level: 2)
 
 # output
 FactoryBot.define do
-  factory :order_hash, class: Hash do
+  factory :hash, class: Hash do
     id { 1 }
     tags do
       [
@@ -69,11 +76,11 @@ FactoryBot.define do
         "tag2"
       ]
     end
-    address { build(:order_hash_address) }
+    address { build(:hash_address) }
     initialize_with { attributes }
   end
 
-  factory :order_hash_address, class: Hash do
+  factory :hash_address, class: Hash do
     country { "US" }
     initialize_with { attributes }
   end
@@ -83,29 +90,39 @@ end
 - Export the file somewhere
 
 ```ruby
-FactoryBotFactory.build("order_hash", Hash, data, file_path: "spec/factories/order_hash.rb")
+FactoryBotFactory.build(data, file_path: "spec/factories/order_hash.rb")
 
 require 'factory_bot'
 FactoryBot.reload
 FactoryBot.build(:order_hash, id: 2)
-
 ```
 
-## Supported Factories
+- Specifize Factory Name
 
-- Hash
 ```ruby
-FactoryBotFactory.build("order_hash", Hash, data)
+puts FactoryBotFactory.build({ id: 1 }, factory_name: 'order')
+
+# output
+FactoryBot.define do
+  factory :order, class: Hash do
+    id { 1 }
+    initialize_with { attributes }
+  end
+end
 ```
 
-- OpenStruct
-```ruby
-FactoryBotFactory.build("order_open_struct", OpenStruct, data)
-```
+- Specifize Output Data Structure: Hash, OpenStruct and your ActiveModel or ActiveRecord Model
 
-- Your ActiveModel or ActiveRecord Model
 ```ruby
-FactoryBotFactory.build("user", User, User.first)
+puts FactoryBotFactory.build({ id: 1 }, klass: OpenStruct)
+
+# output
+FactoryBot.define do
+  factory :hash, class: OpenStruct do
+    id { 1 }
+    to_create {}
+  end
+end
 ```
 
 ## Configure your own converter
@@ -128,11 +145,11 @@ end
 
 - Output
 ```ruby
-FactoryBotFactory.build("order_hash", Hash, { name: 'My Name', id: "de9515ee-006e-4a28-8af3-e88a5c771b93" })
+FactoryBotFactory.build({ name: 'My Name', id: "de9515ee-006e-4a28-8af3-e88a5c771b93" })
 
 # output
 FactoryBot.define do
-  factory :order_hash, class: Hash do
+  factory :hash, class: Hash do
     name { Faker::Name.name }
     id { Random.uuid() }
     initialize_with { attributes }
