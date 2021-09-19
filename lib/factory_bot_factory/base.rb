@@ -24,16 +24,22 @@ module FactoryBotFactory
         end
       end
 
-      def valid_data?(data)
-        data.is_a?(Hash) || data.is_a?(OpenStruct) || data.respond_to?(:attributes)
-      end
-
       def factory(klass, data)
-        if data.respond_to?(:attributes) && klass == data.class
+        if active_record?(data) && klass == data.class
+          Object.const_get("FactoryBotFactory::ActiveRecordFactory")
+        elsif data.respond_to?(:attributes) && klass == data.class
           Object.const_get("FactoryBotFactory::ModelFactory")
         else
           Object.const_get("FactoryBotFactory::#{klass}Factory")
         end
+      end
+
+      def valid_data?(data)
+        data.is_a?(Hash) || data.is_a?(OpenStruct) || data.respond_to?(:attributes)
+      end
+
+      def active_record?(data)
+        Object.const_defined?("ActiveRecord::Base") && data.class.is_a?(ActiveRecord::Base)
       end
     end
   end

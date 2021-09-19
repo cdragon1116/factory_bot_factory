@@ -16,6 +16,7 @@ RSpec.describe FactoryBotFactory::Base do
 
   describe "#build" do
     let(:data) { { id: 1 } }
+    # (TODO): to be deprecated
     it "should build factory" do
       expect(FactoryBotFactory::HashFactory)
         .to receive(:new)
@@ -37,34 +38,34 @@ RSpec.describe FactoryBotFactory::Base do
       end
     end
 
-    context "when shortened args" do
-      context "when first arg is data" do
-        it "support construct args by first arg" do
-          user = User.new
+    context "when first arg is data" do
+      it "support construct args by first arg" do
+        user = User.new
 
-          expect(FactoryBotFactory::ModelFactory)
+        expect(FactoryBotFactory::ModelFactory)
+          .to receive(:new)
+          .with(factory_name: 'user')
+          .and_call_original
+
+        expect_any_instance_of(FactoryBotFactory::ModelFactory)
+          .to receive(:generate)
+          .with(user)
+
+        described_class.build(user)
+      end
+
+      context "when hash" do
+        it "support construct args by first arg" do
+          expect(FactoryBotFactory::OpenStructFactory)
             .to receive(:new)
-            .with(factory_name: 'user')
+            .with(factory_name: 'hash', klass: OpenStruct)
             .and_call_original
 
-          expect_any_instance_of(FactoryBotFactory::ModelFactory)
-            .to receive(:generate)
-            .with(user)
-
-          described_class.build(user)
-        end
-
-        it "support construct args by first arg" do
-          expect(FactoryBotFactory::HashFactory)
-            .to receive(:new)
-            .with(factory_name: 'hash')
-            .and_call_original
-
-          expect_any_instance_of(FactoryBotFactory::HashFactory)
+          expect_any_instance_of(FactoryBotFactory::OpenStructFactory)
             .to receive(:generate)
             .with({ test: 1 })
 
-          described_class.build({ test: 1 })
+          described_class.build({ test: 1 }, klass: OpenStruct)
         end
       end
     end

@@ -11,7 +11,7 @@ module FactoryBotFactory
 
     def generate(data)
       output = LineWriter.wrap_definition do
-        @factory_queue << [@factory_name, data, @nested_level]
+        push_to_factory_queue(@factory_name, data, @nested_level)
         inner_output = []
 
         loop do
@@ -22,9 +22,8 @@ module FactoryBotFactory
         end
 
         inner_output
-      end
+      end.join(LineWriter::NEW_LINE)
 
-      output = output.join(LineWriter::NEW_LINE)
       write_to_file(output)
       output
     end
@@ -42,7 +41,7 @@ module FactoryBotFactory
       File.open(path, 'w') {|f| f.write(output) }
     end
 
-    def build_factory(name, value, level)
+    def build_factory(name, value, level, options)
       raise "This method should be implemented in a subclass"
     end
 
@@ -50,15 +49,15 @@ module FactoryBotFactory
       return @line_writer.build(key, value) if current_level == max_level
 
       if is_key_value_pair?(value)
-        push_to_factory_queue(name, key, value, max_level)
+        push_to_factory_queue("#{name}_#{key}", value, max_level - 1)
         @line_writer.build_nested_line(name, key)
       else
         @line_writer.build(key, value)
       end
     end
 
-    def push_to_factory_queue(name, key, value, max_level)
-      @factory_queue.push(["#{name}_#{key}", value, max_level - 1])
+    def push_to_factory_queue(name, value, max_level, options = {})
+      @factory_queue.push([name, value, max_level, options])
     end
 
     def is_key_value_pair?(value)

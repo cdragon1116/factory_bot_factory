@@ -2,7 +2,7 @@ require 'factory_bot_factory/factories/base_factory.rb'
 
 module FactoryBotFactory
   class OpenStructFactory < BaseFactory
-    def build_factory(name, value, level)
+    def build_factory(name, value, level, _options = {})
       output = LineWriter.wrap_factory(name, 'OpenStruct') do
         inner_output = []
         value = value.attributes if value.respond_to?(:attributes)
