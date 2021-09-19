@@ -14,27 +14,32 @@ gem 'factory_bot_factory'
 
 And then execute:
 
-    $ bundle
+```
+$ bundle
+```
 
 Or install it yourself as:
 
-    $ gem install factory_bot_factory
+```
+$ gem install factory_bot_factory
+```
 
 
-## Qucik Usage
+## Quick Demo
 
 ```ruby
 require 'factory_bot_factory'
 
-FactoryBotFactory.build({ id: 1 })
-FactoryBotFactory.build(OpenStruct.new(id: 1))
-FactoryBotFactory.build(User.last)
+puts FactoryBotFactory.build({ id: 1 })
+puts FactoryBotFactory.build(OpenStruct.new(id: 1))
+puts FactoryBotFactory.build(User.last)
+puts FactoryBotFactory.build(User.new)
 ```
 
 
 ## More Options
 
-- `nested_level` - Build Nested Hash Factory
+- `nested_level` - Build Nested Hash Factory (only support Hash and OpenStruct)
 
 ```ruby
 data = { id: 1, tags: ["tag1", "tag2"], address: { country: "US" }  }
@@ -61,14 +66,14 @@ FactoryBot.define do
 end
 ```
 
-- `file_path` - Export the file somewhere
+- `file_path` - Export output as file somewhere
 
 ```ruby
-FactoryBotFactory.build(data, file_path: "spec/factories/order_hash.rb")
+FactoryBotFactory.build(data, file_path: "spec/factories/hash.rb")
 
 require 'factory_bot'
 FactoryBot.reload
-FactoryBot.build(:order_hash, id: 2)
+FactoryBot.build(:hash, id: 2)
 ```
 
 - `factory_name` - Specifize Factory Name
@@ -87,25 +92,39 @@ end
 
 - `klass` - Specifize Output Data Structure: Hash, OpenStruct and your ActiveModel or ActiveRecord Model
 
+You can convert your Hash object to OpenStruct factory.
+
 ```ruby
-puts FactoryBotFactory.build({ id: 1 }, klass: OpenStruct)
+puts FactoryBotFactory.build({ id: 1 }, factory_name: 'order', klass: OpenStruct)
 
 # output
 FactoryBot.define do
-  factory :hash, class: OpenStruct do
+  factory :order, class: OpenStruct do
     id { 1 }
     to_create {}
   end
 end
 ```
 
-## Configure your own converter
+## Configuration
 
-- Configuration
+- Default factory path
+
+By configuring `factory_path`, it allows file auto-generation without specifying `file_path`.
 
 ```ruby
 FactoryBotFactory.configure do |config|
-  config.string_converter   = Proc.new do |k, v|
+  config.factory_path = 'spec/factories'
+end
+```
+
+- Customize your own converter:
+
+Converter should respond to `call` method and return single or array of executable values.
+
+```ruby
+FactoryBotFactory.configure do |config|
+  config.string_converter = Proc.new { |k, v|
     if v.to_s.match?(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/)
       'Random.uuid()'
     elsif k.to_s.include?('name')
@@ -113,25 +132,25 @@ FactoryBotFactory.configure do |config|
     else
       "'#{v}'"
     end
-  end
-end
-```
+  }
 
-- Output
-```ruby
-FactoryBotFactory.build({ name: 'My Name', id: "de9515ee-006e-4a28-8af3-e88a5c771b93" })
+  config.numeric_converter = Proc.new { |k, v| 'rand(99)' }
+end
+
+FactoryBotFactory.build({ name: 'My Name', id: "de9515ee-006e-4a28-8af3-e88a5c771b93", age: 10 })
 
 # output
 FactoryBot.define do
   factory :hash, class: Hash do
     name { Faker::Name.name }
     id { Random.uuid() }
+    age { rand(99) }
     initialize_with { attributes }
   end
 end
 ```
 
-See more converters [Here](https://github.com/cdragon1116/factory_bot_factory/blob/master/lib/factory_bot_factory/config.rb#L3-L9)
+See more converters [Here](https://github.com/cdragon1116/factory_bot_factory/blob/release/1.1.0/lib/factory_bot_factory/config.rb#L3-L13)
 
 ## Contributing
 
