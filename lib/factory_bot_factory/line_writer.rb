@@ -6,30 +6,42 @@ module FactoryBotFactory
 
     attr_reader :hash_converter, :string_converter, :numertic_converter, :open_struct_converter, :nil_converter
 
-    def initialize(opt = {})
-      @hash_converter        = opt[:hash_converter]        || Converters::HashConverter
-      @string_converter      = opt[:string_converter]      || Converters::StringConverter
-      @numertic_converter    = opt[:numertic_converter]    || Converters::NumericConverter
-      @open_struct_converter = opt[:open_struct_converter] || Converters::HashConverter
-      @nil_converter         = opt[:nil_converter]         || Converters::NilConverter
+    def initialize(options = {})
+      @options               = options
     end
 
     def build(key, value)
-      if value.nil? || value == "null"
-        nil_converter.call(key, value)
+      options = [key, value, @options]
+
+      values = if value.nil? || value == "null"
+        FactoryBotFactory.config.nil_converter.call(*options)
       elsif value.is_a?(String) || value.is_a?(Symbol)
-        string_converter.call(key, value)
+        FactoryBotFactory.config.string_converter.call(*options)
       elsif value.is_a?(Numeric)
-        numertic_converter.call(key, value)
+        FactoryBotFactory.config.numertic_converter.call(*options)
       elsif value.is_a?(Hash) || value.is_a?(Array)
-        hash_converter.call(key, value)
+        FactoryBotFactory.config.hash_converter.call(*options)
       else value.is_a?(OpenStruct)
-        open_struct_converter.call(key, value)
+        FactoryBotFactory.config.open_struct_converter.call(*options)
       end
+
+      wrap_block(key, values)
     end
 
     def build_nested_line(prefix, key)
       ["#{key} { build(:#{prefix}_#{key}) }"]
+    end
+
+    private
+
+    def wrap_block(key, values)
+      values = [values] unless values.is_a?(Array)
+
+      if values.size > 1
+        ["#{key} do"] + values.map { |v| LineWriter.indent(1, v) } + ["end"]
+      else values.is_a?(Array)
+        ["#{key} { #{values[0]} }"]
+      end
     end
 
     class << self

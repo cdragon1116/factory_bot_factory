@@ -89,13 +89,49 @@ FactoryBot.build(:order_hash, id: 2)
 
 ## Supported Factories
 
+- Hash
 ```ruby
 FactoryBotFactory.build("order_hash", Hash, data)
-FactoryBotFactory.build("order_open_struct", OpenStruct, data)
-
-# ActiveModel or ActiveRecord Model
-puts FactoryBotFactory.build("user", User, data)
 ```
+
+- OpenStruct
+```
+FactoryBotFactory.build("order_open_struct", OpenStruct, data)
+```
+
+- Your ActiveModel or ActiveRecord Model
+```
+FactoryBotFactory.build("user", User, user_instance)
+```
+
+## Configure your own converter
+
+- Configure
+
+```ruby
+FactoryBotFactory.configure do |config|
+  config.string_converter   = Proc.new do |k, v|
+    if k.to_s.include?('name')
+      'Faker::Name.name'
+    else
+      "'#{v}'"
+    end
+  end
+end
+
+FactoryBotFactory.build("order_hash", Hash, { name: 'My Name' })
+
+# output
+FactoryBot.define do
+  factory :order_hash, class: Hash do
+    name { Faker::Name.name }
+    initialize_with { attributes }
+  end
+end
+```
+
+See move converters 'lib/factory_bot_factory/config.rb'
+
 
 ## Contributing
 

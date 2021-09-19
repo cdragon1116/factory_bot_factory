@@ -1,10 +1,10 @@
 module FactoryBotFactory
   class BaseFactory
-    def initialize(factory_name:, nested_level: 1, file_path: nil)
-      @factory_name  = factory_name
-      @nested_level  = nested_level
-      @line_writer   = LineWriter.new
-      @file_path     = file_path
+    def initialize(options = {})
+      @factory_name  = options[:factory_name]
+      @file_path     = options[:file_path]
+      @nested_level  = [(options[:nested_level] || 1), 5].min
+      @line_writer   = LineWriter.new(options)
       @factory_queue = []
     end
 

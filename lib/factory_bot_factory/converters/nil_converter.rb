@@ -1,8 +1,8 @@
 module FactoryBotFactory
   module Converters
     class NilConverter
-      def self.call(key, value)
-        ["#{key} { nil }"]
+      def self.call(key, value, options = {})
+        "nil"
       end
     end
   end

@@ -12,7 +12,7 @@ RSpec.describe FactoryBotFactory do
         .to receive(:generate)
         .with(data)
 
-      described_class.build(:my_class, "Hash", data)
+      described_class.build(:my_class, "Hash", data, nested_level: 1)
     end
   end
 end

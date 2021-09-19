@@ -11,6 +11,7 @@ RSpec.describe FactoryBotFactory::HashFactory do
         id: 1,
         name: "CDragon",
         first_name: nil,
+        empty_array: [],
         tags: ["tag1", "tag2"],
         address: {
           billing_address: {
