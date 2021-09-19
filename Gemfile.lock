@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    factory_bot_factory (0.0.5)
+    factory_bot_factory (1.0.0)
 
 GEM
   remote: https://rubygems.org/

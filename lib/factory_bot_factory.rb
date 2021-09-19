@@ -13,11 +13,12 @@ Dir.glob("#{File.dirname(__FILE__)}/factory_bot_factory/factories/*").each { |fi
 module FactoryBotFactory
   class Error < StandardError; end
   class NestedToDeepError < Error; end
+  class FileExistsError < ::FactoryBotFactory::Error; end
 
   class << self
-    def build(factory_name, klass, data, options = {})
+    def build(*args)
       configure
-      Base.build(factory_name, klass, data, options)
+      Base.build(*args)
     end
 
     def configure

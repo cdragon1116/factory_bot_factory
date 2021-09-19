@@ -1,31 +1,17 @@
+require "factory_bot_factory/attribute"
+
 module FactoryBotFactory
   class LineWriter
     NEW_LINE     = "\n".freeze
     WHITE_SPACE  = "\s".freeze
     INDENT_SPACE = 2
 
-    attr_reader :hash_converter, :string_converter, :numertic_converter, :open_struct_converter, :nil_converter
-
     def initialize(options = {})
-      @options               = options
+      @options = options
     end
 
     def build(key, value)
-      options = [key, value, @options]
-
-      values = if value.nil? || value == "null"
-        FactoryBotFactory.config.nil_converter.call(*options)
-      elsif value.is_a?(String) || value.is_a?(Symbol)
-        FactoryBotFactory.config.string_converter.call(*options)
-      elsif value.is_a?(Numeric)
-        FactoryBotFactory.config.numertic_converter.call(*options)
-      elsif value.is_a?(Hash) || value.is_a?(Array)
-        FactoryBotFactory.config.hash_converter.call(*options)
-      else value.is_a?(OpenStruct)
-        FactoryBotFactory.config.open_struct_converter.call(*options)
-      end
-
-      wrap_block(key, values)
+      wrap_block(key, Attribute.new(key, value, @options).build)
     end
 
     def build_nested_line(prefix, key)

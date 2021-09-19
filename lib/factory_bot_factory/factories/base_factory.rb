@@ -1,5 +1,6 @@
 module FactoryBotFactory
   class BaseFactory
+
     def initialize(options = {})
       @factory_name  = options[:factory_name]
       @file_path     = options[:file_path]
@@ -24,11 +25,16 @@ module FactoryBotFactory
       end
 
       output = output.join(LineWriter::NEW_LINE)
-      File.open(@file_path, 'w') {|f| f.write(output) } if @file_path
+      write_to_file(output) if @file_path
       output
     end
 
     private
+
+    def write_to_file(output)
+      raise FileExistsError, "File already exists in #{@file_path}" if File.file?(@file_path)
+      File.open(@file_path, 'w') {|f| f.write(output) }
+    end
 
     def build_factory(name, value, level)
       raise "This method should be implemented in a subclass"
