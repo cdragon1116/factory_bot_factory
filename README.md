@@ -111,7 +111,9 @@ FactoryBotFactory.build("user", User, user_instance)
 ```ruby
 FactoryBotFactory.configure do |config|
   config.string_converter   = Proc.new do |k, v|
-    if k.to_s.include?('name')
+    if v.to_s.match?(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/)
+      'Random.uuid()'
+    elsif k.to_s.include?('name')
       'Faker::Name.name'
     else
       "'#{v}'"
@@ -119,12 +121,13 @@ FactoryBotFactory.configure do |config|
   end
 end
 
-FactoryBotFactory.build("order_hash", Hash, { name: 'My Name' })
+FactoryBotFactory.build("order_hash", Hash, { name: 'My Name', id: "de9515ee-006e-4a28-8af3-e88a5c771b93" })
 
 # output
 FactoryBot.define do
   factory :order_hash, class: Hash do
     name { Faker::Name.name }
+    id { Random.uuid() }
     initialize_with { attributes }
   end
 end
