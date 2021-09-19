@@ -4,7 +4,7 @@
 
 A Gem that helps you generate FactoryBot's Factory file from exsiting Hash, OpenStruct or ActiveModels.
 
-The main purpose is to speed up the process of building big factory.
+![factory_bot_factory_speed_demo](https://user-images.githubusercontent.com/39395058/133921801-e6c2b61d-71f1-4b99-b096-a0304fdbce87.gif)
 
 ## Installation
 
@@ -24,6 +24,8 @@ Or install it yourself as:
 ## Qucik Usage
 
 ```ruby
+require 'factory_bot_factory'
+
 FactoryBotFactory.build({ id: 1 })
 FactoryBotFactory.build(OpenStruct.new(id: 1))
 FactoryBotFactory.build(User.last)
@@ -32,35 +34,7 @@ FactoryBotFactory.build(User.last)
 
 ## More Options
 
-- Build a Hash Factory
-
-```ruby
-require 'factory_bot_factory'
-
-data = { id: 1, tags: ["tag1", "tag2"], address: { country: "US" }  }
-puts FactoryBotFactory.build(data)
-
-# output
-FactoryBot.define do
-  factory :hash, class: Hash do
-    id { 1 }
-    tags do
-      [
-        "tag1",
-        "tag2"
-      ]
-    end
-    address do
-      {
-        "country": "US"
-      }
-    end
-    initialize_with { attributes }
-  end
-end
-```
-
-- Nested Hash Factory
+- `nested_level` - Build Nested Hash Factory
 
 ```ruby
 data = { id: 1, tags: ["tag1", "tag2"], address: { country: "US" }  }
@@ -87,7 +61,7 @@ FactoryBot.define do
 end
 ```
 
-- Export the file somewhere
+- `file_path` - Export the file somewhere
 
 ```ruby
 FactoryBotFactory.build(data, file_path: "spec/factories/order_hash.rb")
@@ -97,7 +71,7 @@ FactoryBot.reload
 FactoryBot.build(:order_hash, id: 2)
 ```
 
-- Specifize Factory Name
+- `factory_name` - Specifize Factory Name
 
 ```ruby
 puts FactoryBotFactory.build({ id: 1 }, factory_name: 'order')
@@ -111,7 +85,7 @@ FactoryBot.define do
 end
 ```
 
-- Specifize Output Data Structure: Hash, OpenStruct and your ActiveModel or ActiveRecord Model
+- `klass` - Specifize Output Data Structure: Hash, OpenStruct and your ActiveModel or ActiveRecord Model
 
 ```ruby
 puts FactoryBotFactory.build({ id: 1 }, klass: OpenStruct)
