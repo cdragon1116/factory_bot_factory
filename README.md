@@ -76,7 +76,7 @@ FactoryBot.reload
 FactoryBot.build(:hash, id: 2)
 ```
 
-- `factory_name` - Specifize Factory Name
+- `factory_name` - Specify Factory Name
 
 ```ruby
 puts FactoryBotFactory.build({ id: 1 }, factory_name: 'order')
@@ -90,7 +90,7 @@ FactoryBot.define do
 end
 ```
 
-- `klass` - Specifize Output Data Structure: Hash, OpenStruct and your ActiveModel or ActiveRecord Model
+- `klass` - Specify Output Data Structure: Hash, OpenStruct and your ActiveModel or ActiveRecord Model
 
 You can convert your Hash object to OpenStruct factory.
 
@@ -124,7 +124,8 @@ Converter should respond to `call` method and return single or array of executab
 
 ```ruby
 FactoryBotFactory.configure do |config|
-  config.string_converter = Proc.new { |k, v|
+  config.numeric_converter = Proc.new { |k, v| 'rand(99)' }
+  config.string_converter = Proc.new do |k, v|
     if v.to_s.match?(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/)
       'Random.uuid()'
     elsif k.to_s.include?('name')
@@ -132,9 +133,7 @@ FactoryBotFactory.configure do |config|
     else
       "'#{v}'"
     end
-  }
-
-  config.numeric_converter = Proc.new { |k, v| 'rand(99)' }
+  end
 end
 
 FactoryBotFactory.build({ name: 'My Name', id: "de9515ee-006e-4a28-8af3-e88a5c771b93", age: 10 })
@@ -150,7 +149,7 @@ FactoryBot.define do
 end
 ```
 
-See more converters [Here](https://github.com/cdragon1116/factory_bot_factory/blob/release/1.1.0/lib/factory_bot_factory/config.rb#L3-L13)
+See more converters [Here](https://github.com/cdragon1116/factory_bot_factory/blob/main/lib/factory_bot_factory/config.rb#L3-L13)
 
 ## Contributing
 
