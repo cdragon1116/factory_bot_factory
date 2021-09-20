@@ -10,5 +10,6 @@ RSpec.shared_context :factory, :shared_context => :metadata do
 
   after do
     File.delete(File.open(file_path))
+    FactoryBot.reload
   end
 end
