@@ -5,8 +5,9 @@ require "factory_bot"
 require "factory_bot_factory"
 require "shared_context/factory"
 require "active_record"
-require "initializers/active_record"
 require "helpers/configration"
+require "initializers/active_record"
+require "initializers/factory_bot_factory"
 
 $LOAD_PATH.unshift File.expand_path("../lib", __dir__)
 

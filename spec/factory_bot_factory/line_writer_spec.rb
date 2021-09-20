@@ -6,7 +6,7 @@ RSpec.describe FactoryBotFactory::LineWriter do
 
   describe "#build" do
     it "should build line" do
-      expect(writer.build("key", "string")).to eq(["key { \"string\" }"])
+      expect(writer.write("key", "string")).to eq(["key { \"string\" }"])
     end
 
     context "when configure custom converter" do
@@ -17,7 +17,7 @@ RSpec.describe FactoryBotFactory::LineWriter do
       end
 
       it "should build line" do
-        expect(writer.build("key", "string")).to eq(["key { 'helloooo' }"])
+        expect(writer.write("key", "string")).to eq(["key { 'helloooo' }"])
       end
     end
   end

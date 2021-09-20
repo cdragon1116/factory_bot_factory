@@ -10,11 +10,11 @@ module FactoryBotFactory
       @options = options
     end
 
-    def build(key, value)
+    def write(key, value)
       wrap_block(key, Attribute.new(key, value, @options).build)
     end
 
-    def build_nested_line(prefix, key)
+    def write_nested_line(prefix, key)
       ["#{key} { build(:#{prefix}_#{key}) }"]
     end
 
@@ -35,11 +35,19 @@ module FactoryBotFactory
         "#{WHITE_SPACE * INDENT_SPACE * level}#{value}"
       end
 
+      def indent_lines(level, value)
+        value.map { |s| indent(level, s) }
+      end
+
+      def join(lines)
+        lines.join(LineWriter::NEW_LINE)
+      end
+
       def wrap_definition(&_block)
         output = ["FactoryBot.define do"]
         output += yield.map { |s| indent(1, s) }
         output << "end"
-        output
+        output.join(LineWriter::NEW_LINE)
       end
 
       def wrap_factory(name, target, &_block)
